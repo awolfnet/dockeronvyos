@@ -11,7 +11,7 @@ if [ "$VERSION_CODENAME" != 'buster' ]; then
 	echo ""
 	echo "***Warning***"
 	echo "This install script only test on buster, but your system is $VERSION_CODENAME."
-	echo -n "Are you sure to continue?[N/y]"
+	echo -n "Are you sure want to continue?[N/y]"
 	read -n 1 continue
 	if [ "${continue,,}" != 'y' ]; then
 		echo ""
@@ -42,6 +42,17 @@ apt-get update
 
 echo "Installing tools"
 apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+
+# Add docker repo
+echo "Adding Docker gpg keyring"
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+
+echo "Adding Docker source"
+echo "deb [arch=amd64] https://download.docker.com/linux/debian buster stable" > /etc/apt/sources.list.d/docker.list
+
+echo "Updating..."
+apt-get update
+
 
 
 # Check if docker service is started
