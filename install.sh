@@ -5,7 +5,7 @@
 # Show vyos version
 lsb_release -a
 
-source /etc/os-release
+VERSION_CODENAME=`lsb_release -c --short`
 
 if [ "$VERSION_CODENAME" != 'buster' ]; then
 	echo ""
@@ -30,11 +30,11 @@ echo ""
 
 # check apt source
 aptsourcefile="/etc/apt/sources.list"
-debsource="deb http://deb.debian.org/debian buster main contrib non-free"
+debsource="deb http://deb.debian.org/debian $VERSION_CODENAME main contrib non-free"
 
 if [ `grep -c "$debsource" $aptsourcefile` -eq 0 ]; then
 	echo "Adding Debian source to apt sources list($aptsourcefile)"
-	echo "deb http://deb.debian.org/debian buster main contrib non-free" >> /etc/apt/sources.list
+	echo $debsource >> /etc/apt/sources.list
 fi
 
 echo "Updating..."
